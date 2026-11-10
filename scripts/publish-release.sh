@@ -17,26 +17,8 @@ trap 'rm -f "$SIG"' EXIT
 base64 -d < "$ASSETS/manifest.json.sig" > "$SIG"
 openssl pkeyutl -verify -rawin -pubin -inkey "$ROOT_DIR/signing/road-data-ed25519.pub.pem" \
   -in "$ASSETS/manifest.json" -sigfile "$SIG" >/dev/null
-read -r TAG REGION_COUNT < <(python3 - "$ASSETS" <<'PY'
-import hashlib, json, os, sys
-root = sys.argv[1]
-manifest = json.load(open(os.path.join(root, "manifest.json")))
-listed = set()
-for region in manifest["regions"]:
-    name = os.path.basename(region["url"])
-    listed.add(name)
-    path = os.path.join(root, name)
-    data = open(path, "rb").read()
-    if len(data) != region["bytes"] or hashlib.sha256(data).hexdigest() != region["sha256"]:
-        sys.exit(f"{name}: size or SHA-256 does not match manifest")
-    if f"/releases/download/{manifest['release_tag']}/" not in region["url"]:
-        sys.exit(f"{name}: URL does not point at release {manifest['release_tag']}")
-extra = set(os.listdir(root)) - listed - {"manifest.json", "manifest.json.sig"}
-if extra:
-    sys.exit(f"Unlisted files in asset dir: {sorted(extra)}")
-print(manifest["release_tag"], len(manifest["regions"]))
-PY
-)
+verified="$(python3 "$ROOT_DIR/scripts/verify_assets.py" "$ASSETS")"
+read -r TAG REGION_COUNT <<< "$verified"
 
 gh release create "$TAG" "$ASSETS"/* --repo "$REPO" --latest \
   --title "Road data ${TAG#road-data-}" \

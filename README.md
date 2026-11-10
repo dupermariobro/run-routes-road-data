@@ -19,6 +19,10 @@ Each [release](https://github.com/dupermariobro/run-routes-road-data/releases) c
 | `manifest.json.sig` | Base64 Ed25519 signature over the exact bytes of `manifest.json` |
 | `us-xx-YYMMDD-road-safety-v1.sqlite.xz` | One file per region (50 states, DC, Puerto Rico, U.S. Virgin Islands) |
 
+First release (`road-data-2026-11-10`, OSM data of 2026-11-08): 53 regions,
+about 100 MB in total. Median 1.5 MB per region; largest California 8.8 MB, Texas 7.1 MB,
+Florida 5.3 MB; smallest U.S. Virgin Islands 0.05 MB.
+
 The app always reads the newest manifest from the stable URL:
 
 ```
