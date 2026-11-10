@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.apollo.run-routes.road-data-refresh</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/bin/bash</string>
+		<string>__REPO_DIR__/scripts/build-and-publish.sh</string>
+	</array>
+	<key>EnvironmentVariables</key>
+	<dict>
+		<!-- Report success/failure to Open Loops as run-routes/road-data-refresh. -->
+		<key>RR_REPORT_LOOPS</key>
+		<string>1</string>
+		<key>PATH</key>
+		<string>/opt/homebrew/bin:__HOME__/.local/bin:/usr/bin:/bin</string>
+	</dict>
+	<!-- Yearly, 10 November 03:30. Downloads ~11 GB one state at a time (peak ~2 GB on disk); the work dir is deleted when it finishes. -->
+	<key>StartCalendarInterval</key>
+	<dict>
+		<key>Month</key>
+		<integer>11</integer>
+		<key>Day</key>
+		<integer>10</integer>
+		<key>Hour</key>
+		<integer>3</integer>
+		<key>Minute</key>
+		<integer>30</integer>
+	</dict>
+	<key>StandardOutPath</key>
+	<string>__HOME__/Library/Logs/run-routes-road-data.log</string>
+	<key>StandardErrorPath</key>
+	<string>__HOME__/Library/Logs/run-routes-road-data.log</string>
+	<key>LowPriorityIO</key>
+	<true/>
+	<key>Nice</key>
+	<integer>10</integer>
+</dict>
+</plist>

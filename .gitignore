@@ -1,0 +1,7 @@
+*.osm.pbf
+*.geojsonseq
+*.sqlite
+*.sqlite.xz
+*.pem
+!signing/road-data-ed25519.pub.pem
+.DS_Store
